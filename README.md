@@ -30,18 +30,21 @@ that one check, so all three follow at once.
 
 Floors affected: `wood_floor`, `wood_floor_1x1`, `ashwood_floor_1x1`,
 `ashwood_floor_2x2`, `ashwood_deco_floor`, `iron_floor_1x1`, `iron_floor_1x1_v2`,
-`iron_floor_2x2`, `iron_grate`. Anything the game itself tags as a floor piece is
-covered, mods included — there is no list of prefab names baked in.
+`iron_floor_2x2`. Anything the game itself tags as a floor piece is covered, mods
+included — there is no list of prefab names baked in. Grates are not floor pieces by
+that classification, so `iron_grate` still lets the rain through.
 
 ## Fires on floors
 
-Campfires, hearths, bonfires and braziers refuse to leave bare earth. Two prefab
-flags do that: `notOnWood` rejects any wooden piece under the cursor, and
-`groundOnly` rejects anything that is not raw terrain.
+Campfires, hearths, bonfires and braziers refuse to leave bare earth. Three prefab
+flags do that: `notOnWood` rejects any wooden piece under the cursor, `groundOnly`
+rejects anything that is not raw terrain, and `groundPiece` does the same and bails
+out first, which is why hearths and braziers need it cleared too.
 
-Both are cleared on every fireplace piece, so a fire places on the floor you built
-for it. Everything else about placement is untouched — it still needs support, it
-still cannot overlap, and smoke still has to get out.
+All three are cleared on anything the game counts as a fire — a piece carrying the
+`Fireplace` component, or one whose comfort group is Fire. Everything else about
+placement is untouched: it still needs support, it still cannot overlap, and smoke
+still has to get out.
 
 ## Config
 
@@ -65,10 +68,6 @@ depend on it.
 **Existing buildings get it too.** The change is made to the prefabs before
 anything is spawned from them, so the floors already standing in your world behave
 the same as ones you place afterwards. No rebuilding.
-
-**Grates shelter as well.** `iron_grate` is a floor piece by the game's own
-classification, so it stops leaking with the rest. If you wanted the grate to stay
-open to the sky, turn `FloorsAreRoofs` off — there is no per-piece switch.
 
 **Smoke still matters.** A fire indoors with no smoke outlet will still choke you.
 Nothing here touches the smoke system.

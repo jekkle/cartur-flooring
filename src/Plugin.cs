@@ -11,7 +11,7 @@ namespace CarturFlooring
     {
         public const string PluginGuid = "com.jekkle.valheim.carturflooring";
         public const string PluginName = "Cartur's Flooring";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         internal static BepInEx.Logging.ManualLogSource Log;
         internal static ConfigEntry<bool> FloorsAreRoofs;
@@ -49,11 +49,20 @@ namespace CarturFlooring
     //   floor pieces is the whole fix - nothing else in the game reads it.
     //
     // Root cause, part 2 - fires will not sit on floors:
-    //   Player.UpdatePlacementGhost rejects a ghost when Piece.m_notOnWood and the piece under
-    //   the cursor is Wood/HardWood WearNTear, and when Piece.m_groundOnly and the cursor is not
-    //   on a heightmap. Fireplaces carry those flags, so they only ever land on bare terrain.
-    //   Both are plain prefab flags, so clearing them on fire pieces is enough; no placement
-    //   code needs patching.
+    //   Player.UpdatePlacementGhost rejects a ghost on three separate prefab flags:
+    //   m_notOnWood (the piece under the cursor is Wood/HardWood WearNTear), m_groundOnly
+    //   (the cursor is not on a heightmap) and m_groundPiece (same heightmap test, and it
+    //   returns early, so it is the strongest of the three). Fire pieces carry some mix of
+    //   them, so they only ever land on bare terrain. All three are plain prefab flags, so
+    //   clearing them is enough; no placement code needs patching.
+    //
+    //   m_groundPiece also picks the ground-clipping branch of the placement snap. Cleared,
+    //   the piece takes the ordinary collider snap instead - which is what putting a fire on
+    //   a floor wants anyway.
+    //
+    //   Selecting fire pieces by the Fireplace component alone missed hearths and braziers in
+    //   1.0.0, so Piece.m_comfortGroup == ComfortGroup.Fire is accepted too. That is the
+    //   game's own grouping for what counts as a fire.
     //
     // Both are done once on the prefabs, before anything is instantiated from them, so ghosts
     // and already-built pieces in loaded worlds both pick the change up.
@@ -69,6 +78,7 @@ namespace CarturFlooring
 
             var floors = new List<string>();
             var fires = new List<string>();
+            var firesAlreadyFree = new List<string>();
             var missedFloors = new List<string>();
 
             foreach (GameObject prefab in __instance.m_prefabs)
@@ -85,11 +95,23 @@ namespace CarturFlooring
                 if (roofs && isFloor && ClearLeakyTags(prefab))
                     floors.Add(prefab.name);
 
-                if (fireplaces && prefab.GetComponentInChildren<Fireplace>(true) != null && (piece.m_notOnWood || piece.m_groundOnly))
+                bool isFire = prefab.GetComponentInChildren<Fireplace>(true) != null
+                              || piece.m_comfortGroup == Piece.ComfortGroup.Fire;
+
+                if (fireplaces && isFire)
                 {
+                    string cleared = (piece.m_notOnWood ? "notOnWood " : "")
+                                   + (piece.m_groundOnly ? "groundOnly " : "")
+                                   + (piece.m_groundPiece ? "groundPiece" : "");
+
                     piece.m_notOnWood = false;
                     piece.m_groundOnly = false;
-                    fires.Add(prefab.name);
+                    piece.m_groundPiece = false;
+
+                    if (cleared.Length > 0)
+                        fires.Add(prefab.name + " [" + cleared.Trim() + "]");
+                    else
+                        firesAlreadyFree.Add(prefab.name);
                 }
 
                 // A floor piece that does not carry the Floor usage flag would be missed
@@ -99,6 +121,9 @@ namespace CarturFlooring
             }
 
             Plugin.Log.LogInfo($"{Plugin.PluginName} {Plugin.PluginVersion} loaded. Floors now count as roof: {(roofs ? floors.Count + " (" + string.Join(", ", floors.ToArray()) + ")" : "off")}. Fires freed for floor placement: {(fireplaces ? fires.Count + " (" + string.Join(", ", fires.ToArray()) + ")" : "off")}.");
+
+            if (fireplaces && firesAlreadyFree.Count > 0)
+                Plugin.Log.LogInfo($"{Plugin.PluginName}: fire pieces that were already free to place: {string.Join(", ", firesAlreadyFree.ToArray())}");
 
             if (roofs && missedFloors.Count > 0)
                 Plugin.Log.LogWarning($"{Plugin.PluginName}: still leaky, no Floor usage flag: {string.Join(", ", missedFloors.ToArray())}");

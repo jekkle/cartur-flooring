@@ -1,0 +1,38 @@
+# Publishing config for the Thunderstore CLI (tcli), used by tools/publish.ps1.
+#
+# Only the listing metadata lives here. The package itself is built by
+# tools/pack.ps1, and tcli uploads that zip with `publish --file` rather than
+# building its own - so there is one packer, and what gets published is the same
+# file that was tested.
+#
+# version_number below is never read. With `publish --file`, tcli takes the version
+# from the manifest.json inside the zip - it refuses --package-version alongside
+# --file for exactly that reason. package/manifest.json stays the one place a version
+# is edited; the placeholder is here only because the section requires the key.
+
+[package]
+namespace = "Cartur"
+name = "Carturs_Flooring"
+version_number = "0.0.0"
+description = "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Fires, hearths and braziers place on floor tiles instead of only bare ground. Both features separately toggleable."
+website_url = "https://github.com/jekkle/cartur-flooring"
+contains_nsfw_content = false
+
+[package.dependencies]
+denikson-BepInExPack_Valheim = "5.4.2333"
+
+[build]
+icon = "package/icon.png"
+readme = "package/README.md"
+out_dir = "dist"
+
+[[build.copy]]
+source = "package/plugins"
+target = "plugins"
+
+[publish]
+repository = "https://thunderstore.io"
+communities = ["valheim"]
+
+[publish.categories]
+valheim = ["ai-generated", "client-side", "building", "tweaks"]

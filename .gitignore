@@ -1,0 +1,8 @@
+bin/
+obj/
+*.user
+dist/
+package/plugins/
+*.zip
+__pycache__/
+*.pyc

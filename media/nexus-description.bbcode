@@ -1,0 +1,58 @@
+[size=4][b]A floor overhead keeps the rain off. A fire sits on the floor you built for it.[/b][/size]
+
+Two things the base game says no to, for reasons that turn out to be one tag and two flags on the prefabs rather than anything the game actually simulates.
+
+[size=4][b]Floors count as roof[/b][/size]
+
+Build a second storey and the room underneath still soaks. Your fire goes out, your walls take rain damage, and you are standing indoors with the wet debuff on.
+
+That is not the roof check being clever about gaps. Valheim decides "am I under cover" by casting straight up and taking the first collider that is [b]not tagged leaky[/b] - and the wood, ashwood and iron floor pieces ship with that tag on their colliders. Stone and grausten floors do not, which is why those have always sheltered you and the wooden ones never have.
+
+This clears the tag on floor pieces. A floor above you is a roof, the same way a stone floor already was. Rain damage, fire wetness and the shelter status all read that one check, so all three follow at once.
+
+Floors affected: wood_floor, wood_floor_1x1, ashwood_floor_1x1, ashwood_floor_2x2, ashwood_deco_floor, iron_floor_1x1, iron_floor_1x1_v2, iron_floor_2x2, iron_grate. Anything the game itself tags as a floor piece is covered, mods included - there is no list of prefab names baked in.
+
+[size=4][b]Fires on floors[/b][/size]
+
+Campfires, hearths, bonfires and braziers refuse to leave bare earth. Two prefab flags do that: notOnWood rejects any wooden piece under the cursor, and groundOnly rejects anything that is not raw terrain.
+
+Both are cleared on every fireplace piece, so a fire places on the floor you built for it. Everything else about placement is untouched - it still needs support, it still cannot overlap, and smoke still has to get out.
+
+[size=4][b]Config[/b][/size]
+
+BepInEx/config/com.jekkle.valheim.carturflooring.cfg, written on first run.
+
+[list]
+[*][b]FloorsAreRoofs[/b] (default true) - floor tiles shelter the room below.
+[*][b]FiresOnFloors[/b] (default true) - fireplace pieces place on floors, not just bare ground.
+[/list]
+
+Both changes are made once to the shared prefabs at world load, so [b]a toggle takes effect after a game restart[/b]. Turning one off mid-session cannot put the prefab back.
+
+[size=4][b]Worth knowing[/b][/size]
+
+[b]Existing buildings get it too.[/b] The change is made to the prefabs before anything is spawned from them, so the floors already standing in your world behave the same as ones you place afterwards. No rebuilding.
+
+[b]Grates shelter as well.[/b] iron_grate is a floor piece by the game's own classification, so it stops leaking with the rest. If you wanted the grate to stay open to the sky, turn FloorsAreRoofs off - there is no per-piece switch.
+
+[b]Smoke still matters.[/b] A fire indoors with no smoke outlet will still choke you. Nothing here touches the smoke system.
+
+[b]Multiplayer: install it on every client.[/b] Both changes are made to each client's own copy of the prefabs, so a player without the mod still sees rain come through their floors and still cannot put a fire on one. Nothing is synced and nothing conflicts.
+
+[size=4][b]Compatibility[/b][/size]
+
+No transpilers and no method is replaced. One postfix on ZNetScene.Awake edits prefab data once and then does nothing for the rest of the session - there is no per-frame cost and no behaviour for another mod to collide with. Mods that add their own floor pieces are covered automatically if they set the game's Floor usage flag, and modded fireplaces are covered if they use the Fireplace component.
+
+[size=4][b]Installation[/b][/size]
+
+Requires BepInEx. Unpack into your Valheim folder so the DLL lands in BepInEx/plugins.
+
+[size=4][b]More from Cartur[/b][/size]
+
+[url=https://thunderstore.io/c/valheim/p/Cartur/Carturs_HD_Blood/]HD Blood[/url] - higher resolution ground blood and a real burst on every hit.
+[url=https://thunderstore.io/c/valheim/p/Cartur/Carturs_Map_Pins/]Map Pins[/url] - pins the world onto your map as you explore it.
+[url=https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/]Follow Command[/url] - every tamed animal takes the follow command.
+[url=https://thunderstore.io/c/valheim/p/Cartur/Carturs_Compass_and_Clock/]Compass and Clock[/url] - a Skyrim-style compass bar across the top of the screen.
+[url=https://thunderstore.io/c/valheim/p/Cartur/Carturs_Safe_Stamina/]Safe Stamina[/url] - stamina costs nothing while no enemy is near.
+
+Free, and always will be - if it improved your game you can [url=https://www.patreon.com/c/cartur]tip me on Patreon[/url].

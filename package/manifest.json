@@ -1,0 +1,9 @@
+{
+  "name": "Carturs_Flooring",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/jekkle/cartur-flooring",
+  "description": "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Fires, hearths and braziers place on floor tiles instead of only bare ground. Both features separately toggleable.",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2333"
+  ]
+}

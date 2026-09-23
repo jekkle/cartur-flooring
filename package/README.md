@@ -1,87 +1,77 @@
 # Cartur's Flooring
 
-*Free, and always will be — if it improved your game you can [tip me on Patreon](https://www.patreon.com/c/cartur).*
+A floor overhead keeps the rain off, and a fire sits on the floor you built for it.
 
-**More from Cartur:** [HD Blood](https://thunderstore.io/c/valheim/p/Cartur/Carturs_HD_Blood/) ·
-[Map Pins](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Map_Pins/) ·
-[Follow Command](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/) ·
-[Compass and Clock](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Compass_and_Clock/) ·
-[Safe Stamina](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Safe_Stamina/) ·
-[UI HUD](https://thunderstore.io/c/valheim/p/Cartur/Carturs_UI_HUD/)
+![Cartur's Flooring](https://raw.githubusercontent.com/jekkle/cartur-flooring/master/media/nexus-header.png)
 
-A floor overhead keeps the rain off. A fire sits on the floor you built for it.
+![A fire on a wooden floor, under a floor](https://raw.githubusercontent.com/jekkle/cartur-flooring/master/media/nexus-gallery.png)
 
-Two things the base game says no to, for reasons that turn out to be one tag and
-two flags on the prefabs rather than anything the game actually simulates.
+**Floors count as roof.** Build a second storey and the room underneath still
+soaks — your fire goes out, your walls take rain damage, and you stand indoors
+with the wet debuff on. Wooden, ashwood and iron floors ship tagged `leaky`;
+stone and grausten don't, which is why those always sheltered you. This clears
+the tag, so rain damage, fire wetness and shelter status all follow at once.
 
-## Floors count as roof
+**Fires go on floors.** Campfires, hearths, bonfires and braziers refuse to leave
+bare earth. Three prefab flags do that, and all three are cleared on anything the
+game counts as a fire. Smelters, kilns and blast furnaces get the same treatment.
 
-Build a second storey and the room underneath still soaks. Your fire goes out,
-your walls take rain damage, and you are standing indoors with the wet debuff on.
+Everything else about placement is untouched — it still needs support, it still
+can't overlap, and smoke still has to get out.
 
-That is not the roof check being clever about gaps. Valheim decides "am I under
-cover" by casting straight up and taking the first collider that is **not tagged
-`leaky`** — and the wood, ashwood and iron floor pieces ship with that tag on
-their colliders. Stone and grausten floors do not, which is why those have always
-sheltered you and the wooden ones never have.
+**Floors stop rotting.** A floor with open sky above it is wet forever, and wet is
+what the game charges rent for - a deck, a jetty or a bridge loses health to rain it
+can never get out of. Floor pieces are now exempt from that rain damage. They still
+darken when it rains, they still collapse without support, and they still refuse to
+catch fire while wet; only the rot is gone.
 
-This clears the tag on floor pieces. A floor above you is a roof, the same way a
-stone floor already was. Rain damage, fire wetness and the shelter status all read
-that one check, so all three follow at once.
+**Existing buildings get it too.** The change is made to the prefabs before
+anything spawns from them, so floors already standing behave the same. No
+rebuilding.
 
-Floors affected: `wood_floor`, `wood_floor_1x1`, `ashwood_floor_1x1`,
-`ashwood_floor_2x2`, `ashwood_deco_floor`, `iron_floor_1x1`, `iron_floor_1x1_v2`,
-`iron_floor_2x2`. Anything the game itself tags as a floor piece is covered, mods
-included — there is no list of prefab names baked in. Grates are not floor pieces by
-that classification, so `iron_grate` still lets the rain through.
+## Settings
 
-## Fires on floors
-
-Campfires, hearths, bonfires and braziers refuse to leave bare earth. Three prefab
-flags do that: `notOnWood` rejects any wooden piece under the cursor, `groundOnly`
-rejects anything that is not raw terrain, and `groundPiece` does the same and bails
-out first, which is why hearths and braziers need it cleared too.
-
-All three are cleared on anything the game counts as a fire — a piece carrying the
-`Fireplace` component, or one whose comfort group is Fire. Everything else about
-placement is untouched: it still needs support, it still cannot overlap, and smoke
-still has to get out.
-
-## Config
-
-`BepInEx/config/com.jekkle.valheim.carturflooring.cfg`, written on first run.
+`BepInEx/config/com.jekkle.valheim.carturflooring.cfg`.
 
 | Setting | Default | What it does |
 | --- | --- | --- |
 | `FloorsAreRoofs` | true | Floor tiles shelter the room below. |
 | `FiresOnFloors` | true | Fireplace pieces place on floors, not just bare ground. |
+| `SmeltersOnFloors` | true | Smelters, kilns and blast furnaces place on floors. |
+| `FloorsDontDecay` | true | Floor tiles take no rain damage. |
 
-Both changes are made once to the shared prefabs at world load, so **a toggle takes
-effect after a game restart**. Turning one off mid-session cannot put the prefab
-back, and the config description says so rather than pretending otherwise.
+The first three are made once to the shared prefabs at world load, so **those toggles
+take effect after a game restart** - turning one off mid-session cannot put the prefab
+back. `FloorsDontDecay` is read as the game runs and takes effect immediately.
 
 [ConfigurationManager](https://thunderstore.io/c/valheim/p/shudnal/ConfigurationManager/)
-makes the file easier to edit from the F1 menu. It is optional; this mod does not
-depend on it.
+makes the file easier to edit from the F1 menu. Optional.
 
 ## Worth knowing
 
-**Existing buildings get it too.** The change is made to the prefabs before
-anything is spawned from them, so the floors already standing in your world behave
-the same as ones you place afterwards. No rebuilding.
+**Smoke still matters.** A fire indoors with no outlet will still choke you.
 
-**Smoke still matters.** A fire indoors with no smoke outlet will still choke you.
-Nothing here touches the smoke system.
+**Multiplayer: install it on every client.** Each client edits its own copy of the
+prefabs. Nothing is synced and nothing conflicts — a player without the mod simply
+still sees rain through their floors.
 
-**Multiplayer: install it on every client.** Both changes are made to each client's
-own copy of the prefabs, so a player without the mod still sees rain come through
-their floors and still cannot put a fire on one. Nothing is synced and nothing
-conflicts — the two clients simply disagree about that one tag.
+Mods that add their own floors or fireplaces are covered automatically, as long as
+they use the game's own floor flag or `Fireplace` component.
 
-## Compatibility
+## Install
 
-No transpilers and no method is replaced. One postfix on `ZNetScene.Awake` edits
-prefab data once and then does nothing for the rest of the session — there is no
-per-frame cost and no behaviour for another mod to collide with. Mods that add
-their own floor pieces are covered automatically if they set the game's Floor usage
-flag, and modded fireplaces are covered if they use the `Fireplace` component.
+Use a mod manager (r2modman / Thunderstore / Gale) and it pulls in BepInEx for you.
+Manually: drop `CarturFlooring.dll` into `BepInEx/plugins`.
+
+---
+
+*Free, and always will be. If it improved your game you can [tip me on Patreon](https://www.patreon.com/c/cartur).*
+
+**More from Cartur:**
+[HD Blood](https://thunderstore.io/c/valheim/p/Cartur/Carturs_HD_Blood/) ·
+[Map Pins](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Map_Pins/) ·
+[Compass and Clock](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Compass_and_Clock/) ·
+[Safe Stamina](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Safe_Stamina/) ·
+[Follow Command](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/) ·
+[UI HUD](https://thunderstore.io/c/valheim/p/Cartur/Carturs_UI_HUD/) ·
+[Waste Management](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Waste_Management/)

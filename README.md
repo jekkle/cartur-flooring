@@ -7,7 +7,8 @@
 [Follow Command](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/) ·
 [Compass and Clock](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Compass_and_Clock/) ·
 [Safe Stamina](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Safe_Stamina/) ·
-[UI HUD](https://thunderstore.io/c/valheim/p/Cartur/Carturs_UI_HUD/)
+[UI HUD](https://thunderstore.io/c/valheim/p/Cartur/Carturs_UI_HUD/) ·
+[Waste Management](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Waste_Management/)
 
 A floor overhead keeps the rain off. A fire sits on the floor you built for it.
 

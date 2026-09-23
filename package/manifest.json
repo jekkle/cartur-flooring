@@ -1,8 +1,8 @@
 {
   "name": "Carturs_Flooring",
-  "version_number": "1.0.1",
+  "version_number": "1.1.0",
   "website_url": "https://github.com/jekkle/cartur-flooring",
-  "description": "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Campfires, hearths, bonfires and braziers place on floor tiles instead of only bare ground. Both features separately toggleable.",
+  "description": "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Fires, smelters and kilns place on floor tiles instead of only bare ground. Floors take no rain damage, so an open deck stops rotting. Each part toggleable.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2333"
   ]

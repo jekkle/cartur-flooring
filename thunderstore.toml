@@ -14,7 +14,7 @@
 namespace = "Cartur"
 name = "Carturs_Flooring"
 version_number = "0.0.0"
-description = "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Fires, hearths and braziers place on floor tiles instead of only bare ground. Both features separately toggleable."
+description = "Floor tiles count as roof, so a floor overhead shelters the room below from rain. Fires, smelters and kilns place on floor tiles instead of only bare ground. Floors take no rain damage, so an open deck stops rotting. Each part toggleable."
 website_url = "https://github.com/jekkle/cartur-flooring"
 contains_nsfw_content = false
 

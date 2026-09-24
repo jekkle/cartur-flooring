@@ -56,10 +56,13 @@ still has to get out.
 | --- | --- | --- |
 | `FloorsAreRoofs` | true | Floor tiles shelter the room below. |
 | `FiresOnFloors` | true | Fireplace pieces place on floors, not just bare ground. |
+| `SmeltersOnFloors` | true | Smelters, kilns and blast furnaces place on floors. |
+| `FloorsDontDecay` | true | Floor tiles take no rain damage. |
 
-Both changes are made once to the shared prefabs at world load, so **a toggle takes
-effect after a game restart**. Turning one off mid-session cannot put the prefab
+The first three are made once to the shared prefabs at world load, so **those toggles
+take effect after a game restart**. Turning one off mid-session cannot put the prefab
 back, and the config description says so rather than pretending otherwise.
+`FloorsDontDecay` is read as the game runs and takes effect immediately.
 
 [ConfigurationManager](https://thunderstore.io/c/valheim/p/shudnal/ConfigurationManager/)
 makes the file easier to edit from the F1 menu. It is optional; this mod does not
@@ -81,8 +84,10 @@ conflicts — the two clients simply disagree about that one tag.
 
 ## Compatibility
 
-No transpilers and no method is replaced. One postfix on `ZNetScene.Awake` edits
-prefab data once and then does nothing for the rest of the session — there is no
-per-frame cost and no behaviour for another mod to collide with. Mods that add
-their own floor pieces are covered automatically if they set the game's Floor usage
-flag, and modded fireplaces are covered if they use the `Fireplace` component.
+No transpilers and no method is replaced. A postfix on `ZNetScene.Awake` edits prefab
+data once and then does nothing for the rest of the session. The one ongoing patch is a
+prefix on `WearNTear.UpdateWear` that, for floor pieces, holds the rain timer the game
+itself already keeps — a single field write, no reflection and no allocation, on a
+method Valheim spreads across frames anyway. Mods that add their own floor pieces are
+covered automatically if they set the game's Floor usage flag, and modded fireplaces are
+covered if they use the `Fireplace` component.

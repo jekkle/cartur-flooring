@@ -67,6 +67,9 @@ Manually: drop `CarturFlooring.dll` into `BepInEx/plugins`.
 
 *Free, and always will be. If it improved your game you can [tip me on Patreon](https://www.patreon.com/c/cartur).*
 
+**[Discord](https://discord.gg/nd5RqpwNkz)** — bug reports, install help, and mod requests.
+Bug reports get their own thread so nothing is lost in a chat scroll, and requests are voted on.
+
 **More from Cartur:**
 [HD Blood](https://thunderstore.io/c/valheim/p/Cartur/Carturs_HD_Blood/) ·
 [Map Pins](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Map_Pins/) ·
@@ -74,4 +77,5 @@ Manually: drop `CarturFlooring.dll` into `BepInEx/plugins`.
 [Safe Stamina](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Safe_Stamina/) ·
 [Follow Command](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/) ·
 [UI HUD](https://thunderstore.io/c/valheim/p/Cartur/Carturs_UI_HUD/) ·
-[Waste Management](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Waste_Management/)
+[Waste Management](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Waste_Management/) ·
+[Feeding Trough](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Feeding_Trough/)

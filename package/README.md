@@ -51,9 +51,13 @@ makes the file easier to edit from the F1 menu. Optional.
 
 **Smoke still matters.** A fire indoors with no outlet will still choke you.
 
-**Multiplayer: install it on every client.** Each client edits its own copy of the
-prefabs. Nothing is synced and nothing conflicts — a player without the mod simply
-still sees rain through their floors.
+**Multiplayer: every player on the server needs the mod.** Each client edits its own
+copy of the prefabs, and wear is calculated by whoever owns the piece. A smelter, kiln or
+windmill on a floor owned by a player without the mod still takes wear and breaks, and
+that player still sees rain through their floors.
+
+The smelter rule covers every piece with a `Smelter` component, including the bathtub and
+spinning wheel, and modded pieces built on it.
 
 Mods that add their own floors or fireplaces are covered automatically, as long as
 they use the game's own floor flag or `Fireplace` component.

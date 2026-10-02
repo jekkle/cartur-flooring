@@ -2,6 +2,9 @@
 
 *Free, and always will be — if it improved your game you can [tip me on Patreon](https://www.patreon.com/c/cartur).*
 
+**[Discord](https://discord.gg/nd5RqpwNkz)** — bug reports, install help, and mod requests.
+Bug reports get their own thread so nothing is lost in a chat scroll, and requests are voted on.
+
 **More from Cartur:** [HD Blood](https://thunderstore.io/c/valheim/p/Cartur/Carturs_HD_Blood/) ·
 [Map Pins](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Map_Pins/) ·
 [Follow Command](https://thunderstore.io/c/valheim/p/Cartur/Carturs_Follow_Command/) ·
@@ -77,10 +80,16 @@ the same as ones you place afterwards. No rebuilding.
 **Smoke still matters.** A fire indoors with no smoke outlet will still choke you.
 Nothing here touches the smoke system.
 
-**Multiplayer: install it on every client.** Both changes are made to each client's
-own copy of the prefabs, so a player without the mod still sees rain come through
-their floors and still cannot put a fire on one. Nothing is synced and nothing
-conflicts — the two clients simply disagree about that one tag.
+**Multiplayer: every player on the server needs the mod.** The prefab edits are made to
+each client's own copy, and the smelter rule clears `m_noSupportWear` the same way. But
+`WearNTear.UpdateWear` runs on whichever player owns the piece's network object, so a
+smelter, kiln or windmill on a floor owned by a player without the mod still takes wear
+and breaks. A player without the mod also still sees rain through their floors and still
+cannot put a fire on one.
+
+**The smelter rule is broader than smelters.** It covers every piece with a `Smelter`
+component, which includes the bathtub and spinning wheel (and modded pieces built on it), not only
+furnaces and kilns.
 
 ## Compatibility
 

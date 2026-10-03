@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+- Listing only, no code change. The README now says that every player on a server needs the mod (floor wear runs on whoever owns the piece), corrects which pieces the smelter rule covers, and links the Discord.
+
 ## 1.1.0
 
 - **Smelters, kilns and blast furnaces place on floors.** Same three placement flags

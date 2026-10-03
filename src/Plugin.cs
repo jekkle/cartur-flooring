@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -11,7 +11,7 @@ namespace CarturFlooring
     {
         public const string PluginGuid = "com.jekkle.valheim.carturflooring";
         public const string PluginName = "Cartur's Flooring";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.1.1";
 
         internal static BepInEx.Logging.ManualLogSource Log;
         internal static ConfigEntry<bool> FloorsAreRoofs;

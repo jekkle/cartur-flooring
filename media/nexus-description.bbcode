@@ -1,68 +1,62 @@
-[size=4][b]A floor overhead keeps the rain off, and a fire sits on the floor you built for it.[/b][/size]
+Floors count as a roof, fires and smelters can be placed on them, and floors stop rotting in the rain.
 
 [img]https://raw.githubusercontent.com/jekkle/cartur-flooring/master/media/nexus-header.png[/img]
 
-[img]https://raw.githubusercontent.com/jekkle/cartur-flooring/master/media/nexus-gallery.png[/img]
+[img]https://raw.githubusercontent.com/jekkle/cartur-flooring/master/docs/images/ingame-flooring.jpg[/img]
 
-[size=4][b]Floors count as roof[/b][/size]
+[size=5][b]What it does[/b][/size]
 
-Build a second storey and the room underneath still soaks. Your fire goes out, your walls take rain damage, and you stand indoors with the wet debuff on.
+Build a second storey out of wood and the room underneath still counts as open sky. Rain gets in, the fire goes out and you stand indoors with the wet debuff. The cause is that wooden, ashwood and iron floor pieces ship with their colliders tagged leaky, which the game's roof checks skip over. Stone and grausten floors are not tagged that way, which is why those always sheltered you. This mod clears the tag on floor pieces, so shelter, rain damage and fire wetness all follow the floor as a roof.
 
-Valheim decides "am I under cover" by casting straight up and taking the first collider that is [b]not tagged leaky[/b]. The wood, ashwood and iron floor pieces ship with that tag; stone and grausten floors do not, which is why those have always sheltered you and the wooden ones never have.
+Campfires, hearths, bonfires and braziers normally refuse to leave bare ground. Three flags on the prefab cause that (m_notOnWood, m_groundOnly and m_groundPiece), and the mod clears all three on any piece the game counts as a fire. Smelters, charcoal kilns and blast furnaces get the same treatment. The rule is applied to every piece with a Smelter component, which also includes the windmill, the spinning wheel and the bathtub, and to modded pieces built on it. Stone stations also lose their no-support-wear flag, because otherwise the game would demolish a stone smelter in one tick for standing on a wooden plank.
 
-This clears the tag on floor pieces. Rain damage, fire wetness and the shelter status all read that one check, so all three follow at once.
+A floor with open sky above it is wet forever, and the game charges rent for that: a deck, a jetty or a bridge loses health to rain it can never get out of. Floor pieces are exempt from that rain damage. They still darken when it rains, they still collapse without support, and snow, ash and fire wetness behave as before. Only the rot is gone.
 
-[size=4][b]Fires on floors[/b][/size]
+The changes are made to the prefabs before anything spawns from them, so floors already standing behave the same. You do not need to rebuild. Other placement rules are not changed.
 
-Campfires, hearths, bonfires and braziers refuse to leave bare earth. Three prefab flags do that - notOnWood, groundOnly and groundPiece - and all three are cleared on anything the game counts as a fire.
+[size=5][b]Settings[/b][/size]
 
-Smelters, charcoal kilns, blast furnaces, windmills and spinning wheels get the same treatment, plus one more thing they need: a stone station standing on a wooden floor would otherwise be demolished by the game's own support check within a tick. That check is switched off for those pieces. Support is still calculated; it just no longer knocks your smelter down.
-
-Everything else about placement is untouched - it still needs support, it still cannot overlap, and smoke still has to get out.
-
-[size=4][b]Floors stop rotting[/b][/size]
-
-A floor is the one piece that usually has open sky above it - a deck, a jetty, a bridge - so it fails the roof check forever and takes rain damage forever. Floor pieces are now exempt from that rain damage.
-
-They still darken when it rains, they still fall down without support, and they still refuse to catch fire while wet. Only the rot is gone.
-
-[size=4][b]Config[/b][/size]
-
-BepInEx/config/com.jekkle.valheim.carturflooring.cfg, written on first run.
+Config file: BepInEx/config/com.jekkle.valheim.carturflooring.cfg.
 
 [list]
-[*][b]FloorsAreRoofs[/b] (default true) - floor tiles shelter the room below.[/*]
-[*][b]FiresOnFloors[/b] (default true) - fireplace pieces place on floors, not just bare ground.[/*]
-[*][b]SmeltersOnFloors[/b] (default true) - smelters, kilns and blast furnaces place on floors.[/*]
-[*][b]FloorsDontDecay[/b] (default true) - floor tiles take no rain damage.[/*]
+[*][b]FloorsAreRoofs[/b] (true) - Floor tiles shelter the room below.[/*]
+[*][b]FiresOnFloors[/b] (true) - Fireplace pieces place on floors as well as bare ground.[/*]
+[*][b]SmeltersOnFloors[/b] (true) - Smelters, kilns and blast furnaces place on floors.[/*]
+[*][b]FloorsDontDecay[/b] (true) - Floor tiles take no rain damage.[/*]
 [/list]
 
-The first three are made once to the shared prefabs at world load, so [b]those toggles take effect after a game restart[/b] - turning one off mid-session cannot put the prefab back. FloorsDontDecay is read as the game runs and takes effect immediately.
+The first three are applied once to the shared prefabs at world load, so those toggles take effect after a game restart. Turning one off mid-session cannot put the prefab back. FloorsDontDecay is read as the game runs and takes effect immediately.
 
-[size=4][b]Worth knowing[/b][/size]
+[url=https://thunderstore.io/c/valheim/p/shudnal/ConfigurationManager/]ConfigurationManager[/url] makes the file easier to edit from the F1 menu. It is optional.
 
-[b]Existing buildings get it too.[/b] The change is made to the prefabs before anything is spawned from them, so floors already standing in your world behave the same as ones you place afterwards. No rebuilding.
+[size=5][b]Compatibility and known issues[/b][/size]
 
-[b]Smoke still matters.[/b] A fire indoors with no smoke outlet will still choke you. Nothing here touches the smoke system.
+Every player on a server needs the mod. Each client edits its own copy of the prefabs, and wear is calculated by whoever owns the piece. A smelter, kiln or windmill on a floor owned by a player without the mod still takes wear and breaks, and that player still sees rain through their floors.
 
-[b]Multiplayer: install it on every client.[/b] Each client edits its own copy of the prefabs, so a player without the mod still sees rain come through their floors. Nothing is synced and nothing conflicts.
+Smoke still matters. A fire indoors with no outlet will still choke you.
 
-[size=4][b]Compatibility[/b][/size]
+Mods that add their own floors or fireplaces are covered automatically, as long as they use the game's own floor flag or a Fireplace component. Iron grates do not carry the game's floor flag, so the mod does not treat them as roof. The mod logs the pieces it changed at world load, and warns about any piece named like a floor that is still leaky because it lacks the floor flag.
 
-No transpilers and no method is replaced. A postfix on ZNetScene.Awake edits prefab data once and then does nothing for the rest of the session. The one ongoing patch is a prefix on WearNTear.UpdateWear that, for floor pieces, holds the rain timer the game itself already keeps - a single field write, no reflection and no allocation, on a method Valheim spreads across frames anyway. Mods that add their own floor pieces are covered automatically if they set the game's Floor usage flag, and modded fireplaces are covered if they use the Fireplace component.
+[size=5][b]Install[/b][/size]
 
-[size=4][b]Installation[/b][/size]
+Use a mod manager (r2modman, Thunderstore or Gale) and it pulls in BepInEx for you. To install by hand, drop CarturFlooring.dll into BepInEx/plugins.
 
-Requires BepInEx. Unpack into your Valheim folder so the DLL lands in BepInEx/plugins.
+[size=5][b]Discord[/b][/size]
+[url=https://discord.gg/nd5RqpwNkz]Cartur's Mods Discord[/url] - bug reports, install help, and mod requests. Bug reports get their own thread so nothing is lost, and requests are voted on.
 
-[size=4][b]More from Cartur[/b][/size]
+[size=5][b]More from Cartur[/b][/size]
 
-[url=https://www.nexusmods.com/valheim/mods/3679]HD Blood[/url] - higher resolution ground blood and a real burst on every hit.
+[url=https://www.nexusmods.com/valheim/mods/3679]HD Blood[/url] - higher resolution ground blood, and a real burst of blood on every hit and kill.
 [url=https://www.nexusmods.com/valheim/mods/3681]Map Pins[/url] - pins the world onto your map as you explore it.
 [url=https://www.nexusmods.com/valheim/mods/3684]Compass and Clock[/url] - a compass bar across the top of the screen.
 [url=https://www.nexusmods.com/valheim/mods/3685]Safe Stamina[/url] - stamina costs nothing while no enemy is near.
 [url=https://www.nexusmods.com/valheim/mods/3728]Follow Command[/url] - every tamed animal takes the follow command.
 [url=https://www.nexusmods.com/valheim/mods/3779]UI - HUD[/url] - a hand-drawn bronze HUD you can arrange in game.
 [url=https://www.nexusmods.com/valheim/mods/3888]Waste Management[/url] - a trash can and a sort button in the inventory.
+[url=https://www.nexusmods.com/valheim/mods/4010]Feeding Trough[/url] - a trough your animals eat out of.
+[url=https://www.nexusmods.com/valheim/mods/4088]Combat Text[/url] - bigger damage numbers and a fast crit pop.
+[url=https://www.nexusmods.com/valheim/mods/4389]Farming[/url] - faster crops, bigger harvests, and whole fields planted at once.
+[url=https://www.nexusmods.com/valheim/mods/4390]Mining[/url] - harder pickaxe hits, more ore, and deposits that shatter.
+[url=https://www.nexusmods.com/valheim/mods/4391]Sailing[/url] - a Sailing skill: faster ships, tougher hulls, a wider map reveal.
 
 Free, and always will be - if it improved your game you can [url=https://www.patreon.com/c/cartur]tip me on Patreon[/url].

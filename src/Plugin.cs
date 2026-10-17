@@ -11,7 +11,7 @@ namespace CarturFlooring
     {
         public const string PluginGuid = "com.jekkle.valheim.carturflooring";
         public const string PluginName = "Cartur's Flooring";
-        public const string PluginVersion = "1.1.2";
+        public const string PluginVersion = "1.1.3";
 
         internal static BepInEx.Logging.ManualLogSource Log;
         internal static ConfigEntry<bool> FloorsAreRoofs;

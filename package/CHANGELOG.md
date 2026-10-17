@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+
+- In-game screenshots in the README. No code changes.
+
 ## 1.1.2
 
 - New icon, and the README is rewritten: a fuller description of what the mod does, every setting and default checked against the code, and image captions that match the pictures. No code changes.

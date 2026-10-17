@@ -4,6 +4,8 @@ Floors count as a roof, fires and smelters can be placed on them, and floors sto
 
 ![Cartur's Flooring](https://raw.githubusercontent.com/jekkle/cartur-flooring/master/media/nexus-header.png)
 
+![A fire burning on a wooden floor, under a second wooden floor used as a roof, in the rain](https://raw.githubusercontent.com/jekkle/cartur-flooring/master/docs/images/ingame-flooring.jpg)
+
 ## What it does
 
 Build a second storey out of wood and the room underneath still counts as open sky. Rain gets in, the fire goes out and you stand indoors with the wet debuff. The cause is that wooden, ashwood and iron floor pieces ship with their colliders tagged `leaky`, which the game's roof checks skip over. Stone and grausten floors are not tagged that way, which is why those always sheltered you. This mod clears the tag on floor pieces, so shelter, rain damage and fire wetness all follow the floor as a roof.
